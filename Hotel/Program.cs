@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 
 namespace Hotel;
 
@@ -28,7 +29,20 @@ public class Program
                 ApiResponse<Dictionary<string, string[]>>.Fail("Validation failed."));
         });
         builder.Services.AddOpenApi();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                Description = "Enter the JWT token from /api/auth/login. Do not include the Bearer prefix."
+            });
+            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+            {
+                [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+            });
+        });
         builder.Services.AddSingleton(TypeAdapterConfig.GlobalSettings);
 
         builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
