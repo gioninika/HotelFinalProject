@@ -73,6 +73,13 @@ public class Program
 
         var app = builder.Build();
 
+        if (app.Configuration.GetValue<bool>("Database:ApplyMigrations"))
+        {
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<HmsDbContext>();
+            dbContext.Database.Migrate();
+        }
+
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
