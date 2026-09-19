@@ -35,7 +35,7 @@ This is an excellent local/staging deployment. It is **not** a public production
    | Disk | 50 GB dynamically allocated VDI |
    | Network | Bridged Adapter — select the physical Wi-Fi or Ethernet adapter that reaches your LAN |
 
-4. Start the VM. In the Ubuntu installer, choose a normal server installation, create a normal administrator account (for example `admin`), select **Install OpenSSH server**, and finish the install. Remove the ISO when asked and reboot.
+4. Start the VM. In the Ubuntu installer, choose a normal server installation, create a normal administrator account named `hoteladmin` (do **not** use the reserved name `admin`), select **Install OpenSSH server**, and finish the install. Remove the ISO when asked and reboot.
 5. Log in from the VM console, update it, and create a separate deployment account:
 
    ```bash
@@ -88,7 +88,7 @@ A bridged VM appears as a separate device on your local network. This lets you u
 
    ```powershell
    Test-NetConnection <VM_LAN_IP> -Port 22
-   ssh admin@<VM_LAN_IP>
+   ssh hoteladmin@<VM_LAN_IP>
    ```
 
 ## 3. Create a safe SSH key and connect with Termius
@@ -113,13 +113,13 @@ Install the public key using the password-based SSH session that you already ver
 ```powershell
 $VmIp = "<VM_LAN_IP>"
 Get-Content "$env:USERPROFILE\.ssh\hotel-vm-ed25519.pub" |
-  ssh "admin@$VmIp" "umask 077; mkdir -p ~/.ssh; cat >> ~/.ssh/authorized_keys; chmod 700 ~/.ssh; chmod 600 ~/.ssh/authorized_keys"
+  ssh "hoteladmin@$VmIp" "umask 077; mkdir -p ~/.ssh; cat >> ~/.ssh/authorized_keys; chmod 700 ~/.ssh; chmod 600 ~/.ssh/authorized_keys"
 ```
 
 Open a **second** PowerShell window and test the key before changing SSH security settings:
 
 ```powershell
-ssh -i "$env:USERPROFILE\.ssh\hotel-vm-ed25519" admin@<VM_LAN_IP>
+ssh -i "$env:USERPROFILE\.ssh\hotel-vm-ed25519" hoteladmin@<VM_LAN_IP>
 ```
 
 Only after it succeeds, create `/etc/ssh/sshd_config.d/99-hotel-hardening.conf` in the VM with the following contents (replace the username if yours is different):
@@ -131,7 +131,7 @@ KbdInteractiveAuthentication no
 PubkeyAuthentication yes
 X11Forwarding no
 MaxAuthTries 3
-AllowUsers admin deploy
+AllowUsers hoteladmin deploy
 ```
 
 Validate, then apply the change:
@@ -151,7 +151,7 @@ Keep the working SSH session open until you have verified a new key-based connec
    Label: Hotel Ubuntu VM
    Address: <VM_LAN_IP>   (for example, 192.168.1.50)
    Port: 22
-   Username: admin
+   Username: hoteladmin
    Identity: hotel-vm-ed25519
    ```
 
