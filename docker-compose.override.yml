@@ -1,10 +1,12 @@
 services:
   hotel:
     environment:
-      Email__Host: ${HOTEL_EMAIL_HOST:-}
-      Email__Port: ${HOTEL_EMAIL_PORT:-587}
-      Email__UserName: ${HOTEL_EMAIL_USERNAME:-}
-      Email__Password: ${HOTEL_EMAIL_PASSWORD:-}
-      Email__FromAddress: ${HOTEL_EMAIL_FROM_ADDRESS:-}
-      Email__FromName: ${HOTEL_EMAIL_FROM_NAME:-Hotel}
-      Auth__CodeHmacKey: ${HOTEL_AUTH_CODE_HMAC_KEY:-}
+      Email__Host: "smtp.gmail.com"
+      Email__Port: "587"
+      Email__UserName: "hotelmanagmentsystem2010@gmail.com"
+      Email__Password: "klvvpmkfcidywchk"
+      Email__FromAddress: "hotelmanagmentsystem2010@gmail.com"
+      Email__FromName: "Hotel"
+      Email__UseStartTls: "true"
+      Email__UseAuthentication: "true"
+      Auth__CodeHmacKey: "${HOTEL_AUTH_CODE_HMAC_KEY:-hotel-local-compose-code-hmac-key-rotate-before-deploying}"
