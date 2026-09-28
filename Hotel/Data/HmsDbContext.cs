@@ -26,6 +26,10 @@ public class HmsDbContext : DbContext
         modelBuilder.Entity<Guest>().HasIndex(x => x.PersonalNumber).IsUnique();
         modelBuilder.Entity<Guest>().HasIndex(x => x.PhoneNumber).IsUnique();
         modelBuilder.Entity<AppUser>().HasIndex(x => x.UserName).IsUnique();
+        modelBuilder.Entity<AppUser>()
+            .HasIndex(x => x.Email)
+            .IsUnique()
+            .HasFilter("[Email] IS NOT NULL");
 
         modelBuilder.Entity<Room>().Property(x => x.Price).HasColumnType("decimal(18,2)");
 
@@ -61,6 +65,8 @@ public class HmsDbContext : DbContext
         {
             Id = 1,
             UserName = "admin@hms.com",
+            Email = "admin@hms.com",
+            EmailConfirmed = true,
             Role = Roles.Admin,
             // The matching seeded password is Admin123!. This fixed value prevents
             // EF from detecting a false seed-data change every time it builds the model.

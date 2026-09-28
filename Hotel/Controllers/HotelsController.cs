@@ -113,11 +113,11 @@ public class HotelsController : BaseApiController
 
     [HttpPost("{hotelId:int}/managers")]
     [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
-    public async Task<ActionResult<ApiResponse<AuthResponseDto>>> CreateManager(int hotelId, RegisterDto request)
+    public async Task<ActionResult<ApiResponse<RegistrationResponseDto>>> CreateManager(int hotelId, RegisterDto request)
     {
         if (!CanManageHotel(hotelId))
-            return StatusCode(StatusCodes.Status403Forbidden, ApiResponse<AuthResponseDto>.Fail("You can manage only your own hotel."));
+            return StatusCode(StatusCodes.Status403Forbidden, ApiResponse<RegistrationResponseDto>.Fail("You can manage only your own hotel."));
         var result = await _authService.RegisterManagerAsync(hotelId, request);
-        return StatusCode(StatusCodes.Status201Created, ApiResponse<AuthResponseDto>.Ok(result, "Manager created successfully."));
+        return StatusCode(StatusCodes.Status201Created, ApiResponse<RegistrationResponseDto>.Ok(result, "Manager created. They must confirm their email before logging in."));
     }
 }

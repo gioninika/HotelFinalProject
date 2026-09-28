@@ -47,8 +47,13 @@ public interface IReservationService
 
 public interface IAuthService
 {
-    Task<AuthResponseDto> RegisterAsync(RegisterDto request);
-    Task<AuthResponseDto> RegisterManagerAsync(int hotelId, RegisterDto request);
+    Task<RegistrationResponseDto> RegisterAsync(RegisterDto request);
+    Task<RegistrationResponseDto> RegisterManagerAsync(int hotelId, RegisterDto request);
+    Task<AuthResponseDto> VerifyEmailAsync(VerifyEmailDto request);
+    Task ResendVerificationAsync(EmailOnlyDto request);
+    Task RequestPasswordResetAsync(EmailOnlyDto request);
+    Task ResetPasswordAsync(ResetPasswordDto request);
+    Task ChangePasswordAsync(int userId, ChangePasswordDto request);
     Task<AuthResponseDto> LoginAsync(LoginDto request);
 }
 

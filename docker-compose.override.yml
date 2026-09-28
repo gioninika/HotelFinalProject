@@ -1,0 +1,10 @@
+services:
+  hotel:
+    environment:
+      Email__Host: ${HOTEL_EMAIL_HOST:-}
+      Email__Port: ${HOTEL_EMAIL_PORT:-587}
+      Email__UserName: ${HOTEL_EMAIL_USERNAME:-}
+      Email__Password: ${HOTEL_EMAIL_PASSWORD:-}
+      Email__FromAddress: ${HOTEL_EMAIL_FROM_ADDRESS:-}
+      Email__FromName: ${HOTEL_EMAIL_FROM_NAME:-Hotel}
+      Auth__CodeHmacKey: ${HOTEL_AUTH_CODE_HMAC_KEY:-}

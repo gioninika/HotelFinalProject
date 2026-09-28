@@ -32,15 +32,26 @@ public class ManagerService : IManagerService
         if (await _context.Managers.AnyAsync(x => x.Id != id && (x.Email == email || x.PersonalNumber == request.PersonalNumber)))
             throw new BusinessRuleException("Manager email or personal number is already registered.");
         var user = await _context.AppUsers.FirstOrDefaultAsync(x => x.ManagerId == id);
-        if (user is not null && await _context.AppUsers.AnyAsync(x => x.Id != user.Id && x.UserName == email))
-            throw new BusinessRuleException("This login name is already used.");
+        if (user is not null && await _context.AppUsers.AnyAsync(x =>
+            x.Id != user.Id && (x.UserName == email || x.Email == email)))
+            throw new BusinessRuleException("This login name or email is already used.");
 
         manager.FirstName = request.FirstName;
         manager.LastName = request.LastName;
         manager.PersonalNumber = request.PersonalNumber;
         manager.Email = email;
         manager.PhoneNumber = request.PhoneNumber;
-        if (user is not null) user.UserName = email;
+        if (user is not null)
+        {
+            user.UserName = email;
+            user.Email = email;
+            user.EmailConfirmed = false;
+            user.EmailCodeHash = null;
+            user.EmailCodePurpose = null;
+            user.EmailCodeExpiresAtUtc = null;
+            user.EmailCodeSentAtUtc = null;
+            user.EmailCodeFailedAttempts = 0;
+        }
         _repository.Update(manager);
         await _repository.SaveAsync();
         return manager.Adapt<ManagerDto>();

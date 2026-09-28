@@ -31,15 +31,10 @@ public class GuestService : IGuestService
         if (await _context.Guests.AnyAsync(x => x.Id != id &&
             (x.PhoneNumber == request.PhoneNumber || x.PersonalNumber == request.PersonalNumber)))
             throw new BusinessRuleException("Personal number or phone number is already used by another guest.");
-        var user = await _context.AppUsers.FirstOrDefaultAsync(x => x.GuestId == id);
-        if (user is not null && await _context.AppUsers.AnyAsync(x => x.Id != user.Id && x.UserName == request.PersonalNumber))
-            throw new BusinessRuleException("This login name is already used.");
-
         guest.FirstName = request.FirstName;
         guest.LastName = request.LastName;
         guest.PersonalNumber = request.PersonalNumber;
         guest.PhoneNumber = request.PhoneNumber;
-        if (user is not null) user.UserName = request.PersonalNumber;
         _repository.Update(guest);
         await _repository.SaveAsync();
         return guest.Adapt<GuestDto>();

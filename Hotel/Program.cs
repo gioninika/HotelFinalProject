@@ -53,6 +53,8 @@ public class Program
         builder.Services.AddScoped<IReservationService, ReservationService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IJwtService, JwtService>();
+        builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
+        builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
         var jwtKey = builder.Configuration["Jwt:Key"]!;
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

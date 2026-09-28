@@ -76,6 +76,13 @@ public class AppUser
     public string UserName { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
+    public string? Email { get; set; }
+    public bool EmailConfirmed { get; set; }
+    public string? EmailCodeHash { get; set; }
+    public string? EmailCodePurpose { get; set; }
+    public DateTime? EmailCodeExpiresAtUtc { get; set; }
+    public DateTime? EmailCodeSentAtUtc { get; set; }
+    public int EmailCodeFailedAttempts { get; set; }
     public int? ManagerId { get; set; }
     public int? GuestId { get; set; }
 }

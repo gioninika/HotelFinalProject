@@ -53,3 +53,8 @@ public class AuthResponseDto
     public string Role { get; set; } = string.Empty;
     public DateTime ExpiresAtUtc { get; set; }
 }
+
+public class RegistrationResponseDto
+{
+    public string Email { get; set; } = string.Empty;
+}

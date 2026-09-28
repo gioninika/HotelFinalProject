@@ -34,7 +34,7 @@ public class RegisterDto
     [Required, StringLength(80)] public string LastName { get; set; } = string.Empty;
     [Required, StringLength(50)] public string PersonalNumber { get; set; } = string.Empty;
     [Required, StringLength(30)] public string PhoneNumber { get; set; } = string.Empty;
-    [EmailAddress] public string? Email { get; set; }
+    [Required, EmailAddress] public string Email { get; set; } = string.Empty;
     [Required, MinLength(6)] public string Password { get; set; } = string.Empty;
     [Required] public string Role { get; set; } = string.Empty;
     public int? HotelId { get; set; }
@@ -59,8 +59,30 @@ public class UpdateGuestDto
 
 public class LoginDto
 {
-    [Required] public string UserName { get; set; } = string.Empty;
+    [Required, EmailAddress] public string Email { get; set; } = string.Empty;
     [Required] public string Password { get; set; } = string.Empty;
+}
+
+public class EmailOnlyDto
+{
+    [Required, EmailAddress] public string Email { get; set; } = string.Empty;
+}
+
+public class VerifyEmailDto
+{
+    [Required, EmailAddress] public string Email { get; set; } = string.Empty;
+    [Required, RegularExpression(@"^\d{6}$")] public string Code { get; set; } = string.Empty;
+}
+
+public class ResetPasswordDto : VerifyEmailDto
+{
+    [Required, MinLength(6)] public string NewPassword { get; set; } = string.Empty;
+}
+
+public class ChangePasswordDto
+{
+    [Required] public string CurrentPassword { get; set; } = string.Empty;
+    [Required, MinLength(6)] public string NewPassword { get; set; } = string.Empty;
 }
 
 public class CreateReservationDto
