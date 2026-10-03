@@ -82,12 +82,11 @@ public class Program
             dbContext.Database.Migrate();
         }
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        
+        app.MapOpenApi();
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        
 
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseHttpsRedirection();
